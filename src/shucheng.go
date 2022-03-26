@@ -21,7 +21,12 @@ func (crawler *ShuChengCrawler) SetCollector(collector *colly.Collector) {
 	crawler.collector = collector
 }
 
-func (crawler ShuChengCrawler) Crawl(novel Novel) {
+func isLastPage(link string) bool {
+	r, _ := regexp.Compile(`(http|https):\/\/.*.html$`)
+	return !r.MatchString(link)
+}
+
+func (crawler ShuChengCrawler) Crawl(novel *Novel) {
 
 	chapter := novel.NewChapter()
 
@@ -45,20 +50,13 @@ func (crawler ShuChengCrawler) Crawl(novel Novel) {
 
 	crawler.collector.OnHTML("#BookNext", func(element *colly.HTMLElement) {
 		crawler.link = strings.TrimSpace(element.Attr("href"))
-		r, _ := regexp.Compile(`(http|https):\/\/.*.html$`)
-		log.Println("Link", chapter.Title, crawler.link, r.MatchString(crawler.link))
-		if r.MatchString(crawler.link) {
-			novel.Chapters = append(novel.Chapters, chapter)
-			if len(novel.Chapters) >= 10 {
-				novel.AppendToTxt()
-				novel.Chapters = nil
-				novel.Chapters = make([]Chapter, 0)
-			}
-			element.Request.Visit(crawler.link)
-		} else {
-			novel.Chapters = append(novel.Chapters, chapter)
-			novel.AppendToTxt()
+		novel.Chapters = append(novel.Chapters, chapter)
+		log.Println(chapter.Title, crawler.link)
+		chapter = novel.NewChapter()
+		if isLastPage(crawler.link) {
 			log.Println("end")
+		} else {
+			element.Request.Visit(crawler.link)
 		}
 	})
 	crawler.collector.Visit(crawler.link)

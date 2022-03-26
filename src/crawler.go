@@ -8,7 +8,7 @@ import (
 
 type Crawler interface {
 	SetCollector(collector *colly.Collector)
-	Crawl(novel Novel)
+	Crawl(novel *Novel)
 }
 
 func NewBookCrawler(link string) Crawler {
