@@ -1,7 +1,3 @@
-/*
-Copyright © 2022 rfaychen justin928501@gmail.com
-
-*/
 package src
 
 import (
@@ -20,10 +16,15 @@ type Novel struct {
 	Chapters    []Chapter
 	Description []string
 	Cover       string
+	SavePath    string
 }
 
-func (novel Novel) toTxt(dest string) {
-	file_path := fmt.Sprintf("%s/%s.txt", dest, novel.Name)
+func (novel Novel) NewChapter() Chapter {
+	return Chapter{}
+}
+
+func (novel Novel) AppendToTxt() {
+	file_path := fmt.Sprintf("%s/%s.txt", novel.SavePath, novel.Name)
 	f, err := os.OpenFile(file_path, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		panic(err)

@@ -1,16 +1,19 @@
-/*
-Copyright © 2022 rfaychen justin928501@gmail.com
-
-*/
 package src
 
-func Crawler(first_page_link string) Novel {
-	novel := Novel{}
-	novel.Chapters = make([]Chapter, 0)
-	shuchengCrawler(first_page_link, &novel)
-	return novel
+import (
+	"regexp"
+
+	"github.com/gocolly/colly"
+)
+
+type Crawler interface {
+	SetCollector(collector *colly.Collector)
+	Crawl(novel Novel)
 }
 
-func SaveToFile(novel Novel, dest string) {
-	novel.toTxt(dest)
+func NewBookCrawler(link string) Crawler {
+	if regexp.MustCompile(`www.51shucheng.net`).MatchString(link) {
+		return &ShuChengCrawler{link: link}
+	}
+	return nil
 }

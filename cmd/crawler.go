@@ -23,11 +23,10 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("crawler called")
-		novel := src.Crawler(args[0])
-		pstaus, _ := cmd.Flags().GetBool("path")
-		if pstaus {
-			src.SaveToFile(novel, args[1])
-		}
+		novel := src.Novel{SavePath: args[1]}
+		crawler := src.NewBookCrawler(args[0])
+		crawler.SetCollector(src.NewCollector())
+		crawler.Crawl(novel)
 	},
 }
 
