@@ -16,3 +16,5 @@
 
 # Output of crawler command
 *.txt
+*.epub
+*.json

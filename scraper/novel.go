@@ -1,22 +1,28 @@
-package src
+package scraper
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 )
 
 type Chapter struct {
-	Title     string
-	paragraph []string
+	Title     string   `json:"Title"`
+	Paragraph []string `json:"Paragraph"`
 }
 
 type Novel struct {
-	Name        string
-	Author      string
-	Chapters    []Chapter
-	Description []string
-	Cover       string
+	Name        string    `json:"Name"`
+	Author      string    `json:"Author"`
+	Description []string  `json:"Description"`
+	Cover       string    `json:"Cover"`
+	Chapters    []Chapter `json:"Chapters"`
+}
+
+func NewNovel() *Novel {
+	return &Novel{}
 }
 
 func (novel Novel) NewChapter() Chapter {
@@ -42,7 +48,7 @@ func (novel Novel) SaveToTxt(path string) {
 		end = chapter.Title
 		text += chapter.Title
 		text += "\n\n"
-		for _, paragraph := range chapter.paragraph {
+		for _, paragraph := range chapter.Paragraph {
 			text += paragraph
 		}
 
@@ -59,4 +65,9 @@ func (novel Novel) SaveToTxt(path string) {
 	if _, err = f.WriteString(text); err != nil {
 		panic(err)
 	}
+}
+
+func (novel Novel) SaveToJson(path string) {
+	file, _ := json.MarshalIndent(novel, "", " ")
+	_ = ioutil.WriteFile(path, file, 0600)
 }

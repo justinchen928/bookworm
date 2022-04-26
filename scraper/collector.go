@@ -2,7 +2,7 @@
 Copyright © 2022 rfaychen justin928501@gmail.com
 
 */
-package src
+package scraper
 
 import (
 	"github.com/gocolly/colly"
