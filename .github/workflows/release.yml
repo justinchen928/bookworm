@@ -6,21 +6,24 @@ on:
     - v*
 
 jobs:
-  release:
+  build:
     name: Release on Github
     runs-on: ubuntu-latest
-    steps:
-    - name: Check out source code
-      uses: actions/checkout@v3
 
-    - name: Validates Go releaser config
-      uses: docker://goreleaser/goreleaser:latest
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v3
       with:
-        args: check
+          fetch-depth: 0 # See: https://goreleaser.com/ci/actions/
+
+    - name: Set up Go 1.18
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
 
     - name: Create release on Github
-      uses: docker://goreleaser/goreleaser:latest
+      uses: goreleaser/goreleaser-action@master
       with:
-        args: release
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        version: latest
+        args: release --rm-dist
+      GITHUB_TOKEN: ${{secrets.BOOKWORM_WORKFLOW_TOKEN}}
