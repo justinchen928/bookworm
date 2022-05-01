@@ -26,4 +26,4 @@ jobs:
       with:
         version: latest
         args: release --rm-dist
-      GITHUB_TOKEN: ${{secrets.BOOKWORM_WORKFLOW_TOKEN}}
+        GITHUB_TOKEN: ${{secrets.BOOKWORM_WORKFLOW_TOKEN}}
