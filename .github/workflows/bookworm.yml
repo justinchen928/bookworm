@@ -34,12 +34,12 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Validates Go releaser config
-      uses: docker://goreleaser/goreleaser:latsest
+      uses: docker://goreleaser/goreleaser:latest
       with:
         args: check
 
     - name: Create release on Github
-      uses: docker://goreleaser/goreleaser:latsest
+      uses: docker://goreleaser/goreleaser:latest
       with:
         args: release
       env:
