@@ -1,0 +1,26 @@
+name: Release Bookworm
+
+on:
+  create:
+    tags:
+    - v*
+
+jobs:
+  release:
+    name: Release on Github
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v3
+
+    - name: Validates Go releaser config
+      uses: docker://goreleaser/goreleaser:latest
+      with:
+        args: check
+
+    - name: Create release on Github
+      uses: docker://goreleaser/goreleaser:latest
+      with:
+        args: release
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
