@@ -44,15 +44,9 @@ func (b *commandsBuilder) build() *bookwormCmd {
 
 // Execute adds all child commands to the root command HugoCmd and sets flags appropriately.
 // The args are usually filled with os.Args[1:].
-func Execute(args []string) {
+func Execute(args []string) (*cobra.Command, error) {
 	bookwormCmd := newCommandsBuilder().addAll().build()
 	command := bookwormCmd.getCommand()
 	command.SetArgs(args)
-	c, err := command.ExecuteC()
-
-	if c == command {
-	}
-
-	if err == nil {
-	}
+	return command.ExecuteC()
 }
