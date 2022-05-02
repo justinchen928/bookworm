@@ -17,7 +17,7 @@ GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
 #	@go vet ${PKG_LIST}
 
 test: ## Run unittests
-	@go test -short ${PKG_LIST}
+	@go test ./... -short ${PKG_LIST}
 
 test-coverage: ## Run tests with coverage
 	@go test ./... -short -coverprofile cover.out -covermode=atomic ${PKG_LIST}
