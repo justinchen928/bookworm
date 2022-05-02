@@ -9,6 +9,7 @@ on:
 jobs:
 
   test:
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go
@@ -19,10 +20,14 @@ jobs:
       - name: Check out source code
         uses: actions/checkout@v3
 
+      - name: Run Unit tests.
+        run: make test-coverage
+
       - uses: actions/checkout@master
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          file: ./coverage.txt
 
   build:
     runs-on: ubuntu-latest
