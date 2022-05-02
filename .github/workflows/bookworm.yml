@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  test: Test
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go
