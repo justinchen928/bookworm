@@ -3,7 +3,7 @@ name: Release Bookworm
 on:
   create:
     tags:
-    - v*
+    - 'v*'
 
 jobs:
   build:
